@@ -20,7 +20,8 @@ will be passed via URL and query parameters.
 Responses will always return JSON string.
 
 # Data Model
-## Context Model
+
+## UserQuery Model
 `userquery` collection.
 
 
@@ -29,6 +30,21 @@ Schema:
 - `user_id` (String)
 - `query` (String)
 
+## QueryData Model
+`data` collection
+
+This schema is not stored in the database, but is used to define POST request
+
+Schema:
+- `entity`
+    - `entity_name` (String)
+    - `sysnonyms` (List[String])
+- `intent`
+    - `intent_name` (String)
+    - `examples` (List[String]) (The string is required to include @entity_name instead of all text. For eg. Write `What is @knative_entity_name` instead of `What is knative`)
+- `node` 
+    - `node_name` (String)
+    - `answer`(String)
 
 # Endpoints
 
