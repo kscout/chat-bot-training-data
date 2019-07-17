@@ -1,10 +1,38 @@
 from config.config import service
 from config.logger import logger
 import os
+from pymongo import MongoClient
+from config import config
+import json
+
+# Connecting to MondoDB
+client = MongoClient(config.db_config["DB_HOST"], config.db_config["DB_PORT"], username=config.db_config["DB_USER"],
+                     password=config.db_config["DB_PASSWORD"], connect=False)  # Connection to MongoDB
+database = config.db_config["DB_NAME"]
+userQuery = config.db_config["USER_QUERY"]
+
+db_query = client[database][userQuery]
 
 
 def get_user_queries():
-    return
+    try:
+        response = db_query.find()
+        resp = []
+        for i in response:
+            resp.append({"user_id": i['user_id'], "queries" : i['message']})
+        response = {"entries": resp}
+        logger.info("All queries fetched")
+    except Exception as e:
+        raise Exception({"error": str(e)})
+
+    try:
+        db_query.drop()
+        logger.info("All queries deleted")
+    except Exception as e:
+        raise Exception({"error": str(e)})
+
+    return response
+
 
 
 # function to create new topic in chatbot
