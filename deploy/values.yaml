@@ -1,0 +1,51 @@
+# Global shared chart configuration
+global:
+  # Deployment environment, usually "prod" or "staging"
+  env:
+
+  # App being deployed
+  app: chatbot-training-data
+
+# HTTP service chart
+http:
+  # Serve under host
+  routeEnabled: false
+  #defaultHost: bot.kscout.io
+
+  # Internal app container port
+  port: 8080
+
+  secretKeyRefs:
+    - name: API_KEY
+      ref:
+        name: prod-chat-bot-api-secret
+        key: apikey
+    - name: APP_DB_PASSWORD
+      ref:
+        name: prod-chat-bot-api-mongo-creds
+        key: password
+
+
+  configMapKeyRefs:
+    - name: APP_DB_USER
+      ref:
+        name: prod-chat-bot-api-mongo-config
+        key: user
+    - name: APP_DB_NAME
+      ref:
+        name: prod-chat-bot-api-mongo-config
+        key: dbName
+
+
+  # Configuration
+  configMap:
+    - key: httpAddr
+      value: ":{{ .Values.port }}"
+      envKey: APP_HTTP_ADDR
+    - key: dbHost
+      value: "prod-chat-bot-api-mongo"
+      envKey: APP_DB_HOST
+
+  # Mount secret under path
+  secretMount: /mnt/secret
+
