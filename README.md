@@ -88,7 +88,7 @@ make get-health
 
 To access API, call the URL on the browser or Postman :
 ```
-http://localhost:8001/api/v1/namespaces/kscout/services/<ENV>-chatbot-training-data:http/proxy/<ENDPOINT>
+http://localhost:8001/api/v1/namespaces/kscout/services/<ENV>-chat-bot-training-data:http/proxy/<ENDPOINT>
 ``` 
 
 Replace `<ENV>` with an environment. \
