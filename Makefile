@@ -22,7 +22,7 @@ KUBECTL ?= kubectl
 DB_DATA_DIR ?= container-data/db
 DB_CONTAINER_NAME ?= prod-kscout-bot-api-db
 DB_USER ?= prod-kscout-bot-api
-# Set ENV `DB_PASSWORD` to access Database
+DB_PASSWORD ?= secretpassword
 
 #push local code to ENV deploy
 push: docker imagestream-tag
