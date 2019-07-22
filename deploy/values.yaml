@@ -4,13 +4,15 @@ global:
   env:
 
   # App being deployed
-  app: chatbot-training-data
+  app: chat-bot-training-data
 
 # HTTP service chart
 http:
   # Serve under host
   routeEnabled: false
   #defaultHost: bot.kscout.io
+
+  metricsEnabled: false
 
   # Internal app container port
   port: 8080
