@@ -77,6 +77,17 @@ docker-push:
 	docker push ${DOCKER_TAG}
 
 
+# start kube proxy
+proxy:
+	${KUBECTL} proxy
+
+# open Chatbot-training-data for ENV via proxy
+open-training:
+	@if [ -z "${ENV}" ]; then echo "ENV must be set"; exit 1; fi
+	xdg-open "http://localhost:8001/api/v1/namespaces/kscout/${ENV}-${APP}"
+
+
+
 DB_DATA_DIR ?= container-data/db
 DB_CONTAINER_NAME ?= prod-kscout-bot-api-db
 DB_USER ?= prod-kscout-bot-api
