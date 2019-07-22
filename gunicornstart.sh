@@ -9,7 +9,7 @@ tail -n 0 -f logs/gunicorn*.log &
 
 exec gunicorn app:app \
     --bind 0.0.0.0:8080 \
-    --workers 5 \
+    --workers 2 \
     --log-level=info \
     --log-file=logs/gunicorn.log \
 "$@"

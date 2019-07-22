@@ -20,6 +20,11 @@ http:
       ref:
         name: prod-chat-bot-api-secret
         key: apikey
+    - name: APP_DB_PASSWORD
+      ref:
+        name: prod-chat-bot-api-mongo-creds
+        key: password
+
 
   configMapKeyRefs:
     - name: APP_DB_USER
@@ -37,6 +42,9 @@ http:
     - key: httpAddr
       value: ":{{ .Values.port }}"
       envKey: APP_HTTP_ADDR
+    - key: dbHost
+      value: "prod-chat-bot-api-mongo"
+      envKey: APP_DB_HOST
 
   # Mount secret under path
   secretMount: /mnt/secret
