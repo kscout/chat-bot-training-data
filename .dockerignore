@@ -1,0 +1,19 @@
+.idea/
+venv/
+__pycache__/
+app.log
+
+# Local MongoDB
+container-data
+
+
+# Secrets
+.env
+*secrets*
+!deploy/values.secrets.example.yaml
+
+# Git Files
+.git
+.gitignore
+deploy
+Makefile
