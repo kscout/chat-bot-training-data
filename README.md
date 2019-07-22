@@ -81,12 +81,15 @@ To access the API on local machine, Start thr proxy to the cluster, use command:
 make proxy
 ```
 
-In order to check if the proxy is running and cluster can e accessed, use:
+In order to check if the proxy is running and cluster can be accessed, use:
 ```
 make get-health
 ```
 
 To access API, call the URL on the browser or Postman :
 ```
-http://localhost:8001/api/v1/namespaces/kscout/services/${ENV}-${APP}":http/proxy/<ENDPOINT>
+http://localhost:8001/api/v1/namespaces/kscout/services/${ENV}-chatbot-training-data:http/proxy/<ENDPOINT>
 ``` 
+
+Replace <ENV> with an environment.
+Replace <ENDPOINT> with the endpoint you want to access 
