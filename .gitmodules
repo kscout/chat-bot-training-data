@@ -1,0 +1,3 @@
+[submodule "deploy/charts/http"]
+	path = deploy/charts/http
+	url = git@github.com:kscout/http-service-chart.git
