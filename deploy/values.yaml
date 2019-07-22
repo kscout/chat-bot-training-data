@@ -15,11 +15,25 @@ http:
   # Internal app container port
   port: 8080
 
+  secretKeyRefs:
+    - name: API_KEY
+      ref:
+        name: prod-chat-bot-api-secret
+        key: apikey
+
+  configMapKeyRefs:
+    - name: APP_DB_USER
+      ref:
+        name: prod-chat-bot-api-mongo-config
+        key: user
+    - name: APP_DB_NAME
+      ref:
+        name: prod-chat-bot-api-mongo-config
+        key: dbName
+
+
   # Configuration
   configMap:
-    - key: externalURL
-      value: "{{ .Values.defaultHost }}"
-      envKey: APP_EXTERNAL_URL
     - key: httpAddr
       value: ":{{ .Values.port }}"
       envKey: APP_HTTP_ADDR
@@ -27,5 +41,3 @@ http:
   # Mount secret under path
   secretMount: /mnt/secret
 
-  # Pass Mongo credentials to app container
-  mongoEnabled: true
