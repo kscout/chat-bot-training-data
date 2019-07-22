@@ -12,6 +12,8 @@ http:
   routeEnabled: false
   #defaultHost: bot.kscout.io
 
+  metricsEnabled: false
+
   # Internal app container port
   port: 8080
 
