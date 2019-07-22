@@ -98,7 +98,7 @@ open-proxy:
 DB_DATA_DIR ?= container-data/db
 DB_CONTAINER_NAME ?= prod-kscout-bot-api-db
 DB_USER ?= prod-kscout-bot-api
-
+# Set ENV `DB_PASSWORD` to access Database
 
 # Start MongoDB server in container
 # Pulls docker image for latest mongo build and runs the container
