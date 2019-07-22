@@ -76,7 +76,7 @@ make rollout-prod
 
 In order to access the ChatBot Training Data, you need to be logged in to the cluster from your terminal. 
 
-To access the API on local machine, Start thr proxy to the cluster, use command:
+To access the API on local machine, Start the proxy to the cluster, use command:
 ```
 make proxy
 ```
