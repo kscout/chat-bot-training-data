@@ -83,10 +83,15 @@ docker-push:
 proxy:
 	${KUBECTL} proxy
 
-# open Chatbot-training-data for ENV via proxy
+# open Chatbot-training-data Health for ENV via proxy
 get-health:
 	@if [ -z "${ENV}" ]; then echo "ENV must be set"; exit 1; fi
 	xdg-open "http://localhost:8001/api/v1/namespaces/kscout/services/${ENV}-${APP}":http/proxy/health
+
+# open Chatbot-training-data Health for ENV via proxy
+open-proxy:
+	@if [ -z "${ENV}" ]; then echo "ENV must be set"; exit 1; fi
+	xdg-open "http://localhost:8001/api/v1/namespaces/kscout/services/${ENV}-${APP}":http/proxy
 
 
 
