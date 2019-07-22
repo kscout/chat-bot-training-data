@@ -9,7 +9,7 @@
 
 MAKE ?= make
 
-APP ?= chatbot-training-data
+APP ?= chat-bot-training-data
 DOCKER_TAG ?= kscout/${APP}:${ENV}-latest
 
 KUBE_LABELS ?= app=${APP},env=${ENV}
