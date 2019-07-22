@@ -19,6 +19,11 @@ KUBE_APPLY ?= oc apply -f -
 
 KUBECTL ?= kubectl
 
+DB_DATA_DIR ?= container-data/db
+DB_CONTAINER_NAME ?= prod-kscout-bot-api-db
+DB_USER ?= prod-kscout-bot-api
+# Set ENV `DB_PASSWORD` to access Database
+
 #push local code to ENV deploy
 push: docker imagestream-tag
 
@@ -93,12 +98,6 @@ open-proxy:
 	@if [ -z "${ENV}" ]; then echo "ENV must be set"; exit 1; fi
 	xdg-open "http://localhost:8001/api/v1/namespaces/kscout/services/${ENV}-${APP}":http/proxy
 
-
-
-DB_DATA_DIR ?= container-data/db
-DB_CONTAINER_NAME ?= prod-kscout-bot-api-db
-DB_USER ?= prod-kscout-bot-api
-# Set ENV `DB_PASSWORD` to access Database
 
 # Start MongoDB server in container
 # Pulls docker image for latest mongo build and runs the container
