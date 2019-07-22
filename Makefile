@@ -3,7 +3,8 @@
 	imagestream-tag \
 	deploy deploy-prod deploy-staging \
 	rm-deploy \
-	docker docker-build docker-push
+	docker docker-build docker-push \
+	proxy
 
 
 MAKE ?= make
@@ -16,6 +17,7 @@ KUBE_TYPES ?= dc,configmap,secret,deploy,statefulset,svc,route,is,pod,pv,pvc
 
 KUBE_APPLY ?= oc apply -f -
 
+KUBECTL ?= kubectl
 
 #push local code to ENV deploy
 push: docker imagestream-tag
@@ -82,9 +84,9 @@ proxy:
 	${KUBECTL} proxy
 
 # open Chatbot-training-data for ENV via proxy
-open-training:
+get-health:
 	@if [ -z "${ENV}" ]; then echo "ENV must be set"; exit 1; fi
-	xdg-open "http://localhost:8001/api/v1/namespaces/kscout/${ENV}-${APP}"
+	xdg-open "http://localhost:8001/api/v1/namespaces/kscout/services/${ENV}-${APP}":http/proxy/health
 
 
 
@@ -108,10 +110,6 @@ db:
 # Runs mongo on shell
 db-cli:
 	docker run -it --rm --net host mongo:latest mongo -u ${DB_USER} -p ${DB_PASSWORD}
-
-
-
-
 
 
 
