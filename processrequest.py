@@ -19,7 +19,7 @@ def get_user_queries():
         response = db_query.find()
         resp = []
         for i in response:
-            resp.append({"user_id": i['user_id'], "queries" : i['message']})
+            resp.append({"user_id": i['user_id'], "queries": i['message']})
         response = {"entries": resp}
         logger.info("All queries fetched")
     except Exception as e:
@@ -32,7 +32,6 @@ def get_user_queries():
         raise Exception({"error": str(e)})
 
     return response
-
 
 
 # function to create new topic in chatbot
@@ -106,9 +105,10 @@ def update_learning_node(request_data):
             dialog_node='node_1_1560874446552'
         ).get_result()
 
-        update_conditions = "#" + str(request_data['intent']['intent_name']) + " || " + response["conditions"]
+        print(response["conditions"])
 
-        print(update_conditions)
+        update_conditions = "(" + "#" + str(request_data['intent']['intent_name']) + " || " + response["conditions"][1:]
+
 
         response = service.update_dialog_node(
             workspace_id=os.environ['WORKSPACE_ID'],
@@ -119,6 +119,21 @@ def update_learning_node(request_data):
     except Exception as e:
         raise Exception({"error": "Updated parent node already exists or error in creation " + str(e)})
 
+def update_node_conditions():
+    try:
+        response = service.get_dialog_node(
+            workspace_id=os.environ['WORKSPACE_ID'],
+            dialog_node='node_1_1560874446552'
+        ).get_result()
+
+        response = service.update_dialog_node(
+            workspace_id=os.environ['WORKSPACE_ID'],
+            dialog_node='node_1_1563893216574',
+            new_conditions=response["conditions"]
+        ).get_result()
+        return {"message": "Updated node successfully" + str(response)}
+    except Exception as e:
+        raise Exception({"error": "Updated parent node already exists or error in creation " + str(e)})
 
 def add_query_answers(request_data):
     try:
@@ -138,6 +153,11 @@ def add_query_answers(request_data):
             # Update parent node to identify newly added dialogue node
             updated_parent = update_learning_node(request_data['data'][i])
             logger.info(updated_parent)
+
+        # Update node condition to check user input
+        updated_node = update_node_conditions()
+        logger.info(updated_node)
+
 
         return {"message": "Data source updated"}
 
