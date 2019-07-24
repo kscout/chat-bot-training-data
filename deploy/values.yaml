@@ -10,8 +10,8 @@ global:
 http:
   # Serve under host
   routeEnabled: false
-  #defaultHost: bot.kscout.io
 
+  # Disable internal metrics
   metricsEnabled: false
 
   # Internal app container port
