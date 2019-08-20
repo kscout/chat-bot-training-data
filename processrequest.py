@@ -74,7 +74,7 @@ def create_query_node(request_data):
         response = service.create_dialog_node(
             workspace_id=os.environ['WORKSPACE_ID'],
             dialog_node=request_data['node']['node_name'],
-            conditions='#' + str(request_data['intent']['intent_name']),
+            conditions='(#' + str(request_data['intent']['intent_name'])+' || @'+str(request_data['entity']['entity_name'])+') && intents[0].confidence > 0.8',
             previous_sibling="Welcome",
             output={
                 "generic": [
