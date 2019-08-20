@@ -3,7 +3,6 @@ from config.logger import logger
 import os
 from pymongo import MongoClient
 from config import config
-import json
 
 # Connecting to MondoDB
 client = MongoClient(config.db_config["DB_HOST"], config.db_config["DB_PORT"], username=config.db_config["DB_USER"],
@@ -75,8 +74,8 @@ def create_query_node(request_data):
         response = service.create_dialog_node(
             workspace_id=os.environ['WORKSPACE_ID'],
             dialog_node=request_data['node']['node_name'],
-            conditions='#' + str(request_data['intent']['intent_name']),
-            parent="node_1_1560874446552",
+            conditions='(#' + str(request_data['intent']['intent_name'])+' || @'+str(request_data['entity']['entity_name'])+') && intents[0].confidence > 0.8',
+            previous_sibling="Welcome",
             output={
                 "generic": [
                     {
@@ -96,45 +95,6 @@ def create_query_node(request_data):
         raise Exception({"error": "Dialogue node already exists or error in creation " + str(e)})
 
 
-# function to update parent node condition to identify newly created dialogue node
-def update_learning_node(request_data):
-    # node_id can be acquired only by downloading the skill data
-    try:
-        response = service.get_dialog_node(
-            workspace_id=os.environ['WORKSPACE_ID'],
-            dialog_node='node_1_1560874446552'
-        ).get_result()
-
-        print(response["conditions"])
-
-        update_conditions = "(" + "#" + str(request_data['intent']['intent_name']) + " || " + response["conditions"][1:]
-
-
-        response = service.update_dialog_node(
-            workspace_id=os.environ['WORKSPACE_ID'],
-            dialog_node='node_1_1560874446552',
-            new_conditions=update_conditions
-        ).get_result()
-        return {"message": "Updated parent node created successfully" + str(response)}
-    except Exception as e:
-        raise Exception({"error": "Updated parent node already exists or error in creation " + str(e)})
-
-def update_node_conditions():
-    try:
-        response = service.get_dialog_node(
-            workspace_id=os.environ['WORKSPACE_ID'],
-            dialog_node='node_1_1560874446552'
-        ).get_result()
-
-        response = service.update_dialog_node(
-            workspace_id=os.environ['WORKSPACE_ID'],
-            dialog_node='node_1_1563893216574',
-            new_conditions=response["conditions"]
-        ).get_result()
-        return {"message": "Updated node successfully" + str(response)}
-    except Exception as e:
-        raise Exception({"error": "Updated parent node already exists or error in creation " + str(e)})
-
 def add_query_answers(request_data):
     try:
         for i in range(len(request_data['data'])):
@@ -149,15 +109,6 @@ def add_query_answers(request_data):
             # Create dialogue node, which will provide answer
             new_node = create_query_node(request_data['data'][i])
             logger.info(new_node)
-
-            # Update parent node to identify newly added dialogue node
-            updated_parent = update_learning_node(request_data['data'][i])
-            logger.info(updated_parent)
-
-        # Update node condition to check user input
-        updated_node = update_node_conditions()
-        logger.info(updated_node)
-
 
         return {"message": "Data source updated"}
 
